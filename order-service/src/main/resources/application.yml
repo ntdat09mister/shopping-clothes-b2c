@@ -1,0 +1,30 @@
+discovery:
+  hostname: localhost
+spring:
+  application:
+    name: order-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/shopprovip
+    username: root
+    password: ENC(rbOuS/eud6AztC1N0R4FDg==)
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+server:
+  port: 8080
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+security:
+  oauth2:
+    client:
+      clientId: order-service
+      clientSecret: order-service
+      accessTokenUri: http://localhost:8762/oauth/token
+      grant-type: client_credentials
+      scope: server
+    resource:
+      userInfoUri: http://localhost:8762/auth/user

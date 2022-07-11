@@ -1,0 +1,100 @@
+#service:
+#  hostname:
+#    discovery: 192.168.196.207
+#    auth: 192.168.196.207
+#    user: 192.168.196.207
+#    order: 192.168.196.140
+#    product: 192.168.196.106
+#
+#
+#spring:
+#  application:
+#    name: gateway
+#  cloud:
+#    gateway:
+#      default-filters:
+#        - DedupeResponseHeader=Access-Control-Allow-Origin
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allowedOrigins: "*"
+#            allowedHeaders: "*"
+#            allowedMethods: "*"
+#      routes:
+#        - id: auth-service
+#          uri:
+#            http://${service.hostname.auth}:8900/
+#          predicates:
+#            - Path=/oauth/**, /auth/**
+#        - id: user-service
+#          uri:
+#            http://${service.hostname.user}:8901/
+#          predicates:
+#            - Path=/user/**
+#        - id: product-service
+#          uri:
+#            http://${service.hostname.product}:8000/
+#          predicates:
+#            - Path=/product/**, /line/**, /branch/**, /inventory/**, /discount/**, /review/**, /category/**
+#        - id: order-service
+#          uri:
+#            http://${service.hostname.order}:8080/
+#          predicates:
+#            - Path=/order/**, /cart/**
+#
+#server:
+#  port: 8762
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://${service.hostname.discovery}:8761/eureka/
+service:
+  hostname:
+#    discovery: 192.168.196.207
+#    auth: 192.168.196.207
+#    user: 192.168.196.207
+#    order: 192.168.196.140
+#    product: 192.168.196.106
+
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+      routes:
+        - id: auth-service
+          uri:
+            http://localhost:8900/
+          predicates:
+            - Path=/oauth/**, /auth/**
+        - id: user-service
+          uri:
+            http://localhost:8901/
+          predicates:
+            - Path=/user/**
+        - id: product-service
+          uri:
+            http://localhost:8000/
+          predicates:
+            - Path=/product/**, /line/**, /branch/**, /inventory/**, /discount/**, /review/**, /category/**
+        - id: order-service
+          uri:
+            http://localhost:8080/
+          predicates:
+            - Path=/order/**, /cart/**
+
+server:
+  port: 8762
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
