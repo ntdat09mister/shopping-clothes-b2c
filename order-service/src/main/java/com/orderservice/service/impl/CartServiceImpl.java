@@ -22,21 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
-    private final ModelMapper modelMapper;
-    private final UserClient userClient;
-
     private final ProductClient productClient;
-
-//    @Override
-//    public CartDTO findAll(Long userId) {
-//        List<CartDTONative> carts= cartRepository.findAllCart(userId);
-//        Long totalOrders= Long.valueOf(carts.size());
-//        return CartDTO.builder()
-//                .carts(carts)
-//                .totalCarts(totalOrders)
-//                .build();
-//    } //Tìm kiếm tất cả CartDTO
-
     @Override
     public CartDTO findAll(Long userId, int pageNo, int pageSize,String sortBy,String sortDir){
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
