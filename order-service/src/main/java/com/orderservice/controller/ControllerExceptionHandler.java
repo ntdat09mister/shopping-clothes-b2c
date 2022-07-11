@@ -14,11 +14,11 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 @ControllerAdvice
 @Slf4j
 public class ControllerExceptionHandler extends BaseController {
-//    @ExceptionHandler({HttpMessageNotReadableException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ResponseEntity<?> handleException(HttpMessageNotReadableException e) {
-//        return failedResponse(HttpStatus.BAD_REQUEST.value() + "", "FormatException : Some field values are not valid");
-//    }
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> handleException(HttpMessageNotReadableException e) {
+        return failedResponse(HttpStatus.BAD_REQUEST.value() + "", "FormatException : Some field values are not valid");
+    }
 
     @ExceptionHandler({EmptyResultDataAccessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -38,16 +38,16 @@ public class ControllerExceptionHandler extends BaseController {
         return failedResponse(HttpStatus.BAD_REQUEST.value() + "", "MethodArgumentTypeMismatchException : Wrong input format");
     }
 
-//    @ExceptionHandler({IllegalArgumentException.class})
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ResponseEntity<?> handleException(IllegalArgumentException e) {
-//        return failedResponse(HttpStatus.BAD_REQUEST.value() + "", "IllegalArgumentException : Wrong input format");
-//    }
+    @ExceptionHandler({IllegalArgumentException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<?> handleException(IllegalArgumentException e) {
+        return failedResponse(HttpStatus.BAD_REQUEST.value() + "", "IllegalArgumentException : Wrong input format");
+    }
 
-//    @ExceptionHandler({Exception.class})
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ResponseEntity<?> handleException(Exception e) {
-//        log.error(e.getMessage(), e);
-//        return failedResponse(HttpStatus.INTERNAL_SERVER_ERROR.value() + "", String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
-//    }
+    @ExceptionHandler({Exception.class})
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<?> handleException(Exception e) {
+        log.error(e.getMessage(), e);
+        return failedResponse(HttpStatus.INTERNAL_SERVER_ERROR.value() + "", String.format("%s: %s", e.getClass().getSimpleName(), e.getMessage()));
+    }
 }
