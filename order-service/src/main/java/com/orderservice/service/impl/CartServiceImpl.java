@@ -9,9 +9,7 @@ import com.orderservice.exception.QuantityOrderException;
 import com.orderservice.repository.CartRepository;
 import com.orderservice.service.CartService;
 import com.orderservice.service.client.ProductClient;
-import com.orderservice.service.client.UserClient;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 

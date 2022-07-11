@@ -1,18 +1,17 @@
 package com.orderservice.service;
 
-import com.orderservice.domain.dto.output.OrderDTO;
-import com.orderservice.domain.dto.output.OrderDetailDTO;
-import com.orderservice.domain.dto.output.SaleStaffDTO;
-import com.orderservice.domain.dto.output.TopProduct;
+import com.orderservice.domain.dto.output.*;
+import com.orderservice.domain.entity.Order;
 import com.orderservice.domain.model.Report.*;
 import com.orderservice.domain.model.input.OrderInput;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 public interface OrderService {
-    List<OrderDTO> findAllOrder(Long userId);
+    Page<OrderDTO> findAllOrder(Long userId, Integer pageNo, Integer pageSize, String sortBy, String sortDir);
 
-    List<OrderDetailDTO> findAllOrderDetailDTO(Long userId);
+    Page<OrderDetailDTO> findAllOrderDetailDTO(Long userId,Integer pageNo, Integer pageSize, String sortBy, String sortDir);
 
     void insert(OrderInput orderInput);
 
@@ -40,4 +39,5 @@ public interface OrderService {
 
     void cancelOrder(OrderDTO order);
 
+    OrderTest findAllOrderTest(Integer pageNo, Integer pageSize, String sortBy, String sortDir);
 }

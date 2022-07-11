@@ -2,6 +2,8 @@ package com.orderservice.repository;
 
 import com.orderservice.domain.entity.Order;
 import com.orderservice.domain.model.Report.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -44,4 +46,5 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
             " from (select oi.product_id as ids, count(oi.product_id) as total from order_item oi" +
             " group by oi.product_id) as table1 order by table1.total desc limit :top",nativeQuery = true)
     List<ReportTopProduct> getTopProduct(@Param("top") Long top);
+
 }

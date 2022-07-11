@@ -25,6 +25,7 @@ import com.orderservice.util.QueryUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.map.HashedMap;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -53,15 +54,24 @@ public class OrderServiceImpl implements OrderService {
             ProductOrderDTO productOrderDTO = ProductOrderDTO.builder().quantity(orderItem.getQuantity()).name(product.getProductLine().getName()).color(product.getColor()).build();
             return productOrderDTO;
         }).collect(Collectors.toList());
-        return OrderDTO.builder().orderId(order.getId()).status(order.getStatus()).productOrderDTOS(productOrderDTOS).orderTotalAmount(order.getTotalAmount()).build();
+        return OrderDTO.builder()
+                .orderId(order.getId())
+                .status(order.getStatus())
+                .productOrderDTOS(productOrderDTOS)
+                .orderTotalAmount(order.getTotalAmount())
+                .build();
     }//Tìm kiếm Order theo orderId
 
     @Override
-    public List<OrderDTO> findAllOrder(Long userId) {
+    public Page<OrderDTO> findAllOrder(Long userId, Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
         Specification<Order> specification = (root, cq, cb) -> QueryUtils.filter(root, cb, userId, Param.USER_ID);
-        return orderRepository.findAll(specification).stream().map(order -> findById(order.getId())).collect(Collectors.toList());
+        Page<Order> orders = orderRepository.findAll(specification,pageable);
+        List<OrderDTO> orderDTOS = orders.getContent().stream().map(order -> findById(order.getId())).collect(Collectors.toList());
+        return new PageImpl<>(orderDTOS,pageable,orders.getTotalElements());
     }//Tìm tất cả Order
-
     @Override
     public void deleteById(Long id) {
         orderRepository.deleteById(id);
@@ -130,9 +140,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDetailDTO> findAllOrderDetailDTO(Long userId) {
+    public Page<OrderDetailDTO> findAllOrderDetailDTO(Long userId,Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
         Specification<Order> specification = (root, cq, cb) -> QueryUtils.filter(root, cb, userId, Param.USER_ID);
-        return orderRepository.findAll(specification).stream().map(order -> findOrderDetailDTOByOrderId(order.getId())).collect(Collectors.toList());
+        Page<Order> orders = orderRepository.findAll(specification,pageable);
+        List<OrderDetailDTO> orderDetailDTOS = orders.getContent().stream().map(order -> findOrderDetailDTOByOrderId(order.getId())).collect(Collectors.toList());
+        return new PageImpl<>(orderDetailDTOS,pageable,orders.getTotalElements());
     }
 
     @Override
@@ -214,5 +229,16 @@ public class OrderServiceImpl implements OrderService {
             inventoryDTOs.stream().forEach(inventoryDTO -> inventoryDTO.setQuantity(-inventoryDTO.getQuantity()));
             productClient.updateQuantities(inventoryDTOs);
         }
+    }
+
+    @Override
+    public OrderTest findAllOrderTest(Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+        Page<Order> orders = orderRepository.findAll(pageable);
+        return OrderTest.builder()
+                .orders(orders)
+                .build();
     }
 }

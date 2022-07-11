@@ -1,5 +1,6 @@
 package com.orderservice.controller;
 
+import com.orderservice.common.DefaultPagination;
 import com.orderservice.common.HttpStatusCode;
 import com.orderservice.domain.dto.output.OrderDTO;
 import com.orderservice.domain.message.BaseMessage;
@@ -66,8 +67,13 @@ public class OrderController extends BaseController {
     @ApiResponse(responseCode = HttpStatusCode.OK, description = "Find successfully", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
     @ApiResponse(responseCode = HttpStatusCode.BAD_REQUEST, description = "Invalid input", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
     @ApiResponse(responseCode = HttpStatusCode.UNPROCESSABLE_ENTITY, description = "Internal Server Error", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
-    public ResponseEntity<?> findAllOrder(@UserInfo User user) {
-        return successResponse(orderService.findAllOrder(user.getId()));
+    public ResponseEntity<?> findAllOrder(@UserInfo User user,
+                                          @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_NUMBER) Integer pageNo,
+                                          @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_SIZE) Integer pageSize,
+                                          @RequestParam(required = false, defaultValue = DefaultPagination.SORT_BY) String sortBy,
+                                          @RequestParam(required = false, defaultValue = DefaultPagination.SORT_DIRECTION) String sortDir
+                                          ) {
+        return successResponse(orderService.findAllOrder(user.getId(),pageNo,pageSize,sortBy,sortDir));
     }
 
     /**
@@ -96,8 +102,13 @@ public class OrderController extends BaseController {
     @ApiResponse(responseCode = HttpStatusCode.OK, description = "Find successfully", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
     @ApiResponse(responseCode = HttpStatusCode.BAD_REQUEST, description = "Invalid input", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
     @ApiResponse(responseCode = HttpStatusCode.UNPROCESSABLE_ENTITY, description = "Internal Server Error", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
-    public ResponseEntity<?> findAllOrderDTO(@UserInfo User user) {
-        return successResponse(orderService.findAllOrderDetailDTO(user.getId()));
+    public ResponseEntity<?> findAllOrderDTO(@UserInfo User user,
+                                             @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_NUMBER) Integer pageNo,
+                                             @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_SIZE) Integer pageSize,
+                                             @RequestParam(required = false, defaultValue = DefaultPagination.SORT_BY) String sortBy,
+                                             @RequestParam(required = false, defaultValue = DefaultPagination.SORT_DIRECTION) String sortDir
+                                             ) {
+        return successResponse(orderService.findAllOrderDetailDTO(user.getId(),pageNo,pageSize,sortBy,sortDir));
     }
 
     /**
@@ -313,13 +324,12 @@ public class OrderController extends BaseController {
     public void exportSaleByDay() throws IOException {
         reportSaleByDayExcel.export();
     }
-    private final ProductClient productClient;
-    @GetMapping("product/{id}}")
-    List<Long> findByProductId(@PathVariable Long id){
-        List<Long> inventoryQuantities =  productClient.findByProductId(id).getData().getInventories().stream().map(inventory -> {
-            Long quantity = inventory.getQuantity();
-            return quantity;
-        }).collect(Collectors.toList());
-        return inventoryQuantities;
+    @GetMapping("test")
+    public ResponseEntity<?> findAllOrderTest(@RequestParam(required = false, defaultValue = DefaultPagination.PAGE_NUMBER) Integer pageNo,
+                                              @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_SIZE) Integer pageSize,
+                                              @RequestParam(required = false, defaultValue = DefaultPagination.SORT_BY) String sortBy,
+                                              @RequestParam(required = false, defaultValue = DefaultPagination.SORT_DIRECTION) String sortDir
+                                              ){
+        return successResponse(orderService.findAllOrderTest(pageNo, pageSize, sortBy, sortDir));
     }
 }
