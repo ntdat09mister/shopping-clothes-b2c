@@ -8,13 +8,14 @@ import org.springframework.http.ResponseEntity;
 public class BaseController {
     /**
      * Create a default succeeded message return object with plain text message and payload
+     *
      * @param message Success or error message
-     * @param data Payload
+     * @param data    Payload
+     * @param <T>     Object data
      * @return ExtendedMessage
-     * @param <T> Object data
      */
     public <T> ResponseEntity<?> successResponse(String message, T data) {
-        ExtendedMessage<T> responseMessage =  new ExtendedMessage<>(
+        ExtendedMessage<T> responseMessage = new ExtendedMessage<>(
                 HttpStatus.OK.value() + "",
                 true,
                 message,
@@ -24,6 +25,7 @@ public class BaseController {
 
     /**
      * Create a default succeeded message return object with plain text message
+     *
      * @param message Success or error message
      * @return ExtendedMessage
      */
@@ -33,17 +35,19 @@ public class BaseController {
 
     /**
      * Create a default succeeded message return object with payload
+     *
      * @param data Payload
+     * @param <T>  Object data
      * @return ExtendedMessage
-     * @param <T> Object data
      */
     public <T> ResponseEntity<?> successResponse(T data) {
         return successResponse(null, data);
     }
 
     /**
-     *  Create a default failed message return object
-     * @param code Http status code
+     * Create a default failed message return object
+     *
+     * @param code    Http status code
      * @param message Plain text display error
      * @return BaseMessage
      */

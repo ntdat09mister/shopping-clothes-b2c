@@ -17,6 +17,7 @@ public class JWTTokenStoreConfig {
 
     /**
      * Signing our access token by asymmetric keypair from keystore file
+     *
      * @return JwtAccessTokenConverter
      */
     @Bean
@@ -24,9 +25,9 @@ public class JWTTokenStoreConfig {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setKeyPair(
                 new KeyStoreKeyFactory(
-                serviceConfig.getKeyStoreFile(),
-                serviceConfig.getKeyStorePassword().toCharArray()
-        ).getKeyPair(serviceConfig.getKeyStoreAlias()));
+                        serviceConfig.getKeyStoreFile(),
+                        serviceConfig.getKeyStorePassword().toCharArray()
+                ).getKeyPair(serviceConfig.getKeyStoreAlias()));
         return converter;
     }
 

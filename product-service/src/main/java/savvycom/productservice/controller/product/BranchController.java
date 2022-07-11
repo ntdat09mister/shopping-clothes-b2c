@@ -19,8 +19,7 @@ public class BranchController extends BaseController {
     private IBranchService branchService;
 
     @GetMapping("{id}")
-    public ResponseEntity<?> findByBranch(@PathVariable Long id)
-    {
+    public ResponseEntity<?> findByBranch(@PathVariable Long id) {
         return successResponse(branchService.findById(id));
     }
 }

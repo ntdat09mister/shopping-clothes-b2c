@@ -17,8 +17,9 @@ public class UserSecurity {
      * This function retrieves authentication info in security context and get user principal,
      * then when user request user info at route user/:userId,
      * it checks for whether the user has userId in the route is the user that authenticated.
+     *
      * @param authentication Authentication
-     * @param userId User id
+     * @param userId         User id
      * @return true or false
      */
     public boolean hasUserId(Authentication authentication, Long userId) {

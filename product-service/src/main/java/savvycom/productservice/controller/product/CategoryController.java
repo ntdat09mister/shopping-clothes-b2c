@@ -1,4 +1,5 @@
 package savvycom.productservice.controller.product;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,6 +26,7 @@ public class CategoryController extends BaseController {
 
     /**
      * Create new Product category
+     *
      * @return successResponse
      */
     @PostMapping("")
@@ -39,12 +41,13 @@ public class CategoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> newCategory(@RequestBody Category category)
-    {
+    public ResponseEntity<?> newCategory(@RequestBody Category category) {
         return successResponse(categoryService.save(category));
     }
+
     /**
      * Update new Product category
+     *
      * @return successResponse
      */
     @PutMapping("/{id}")
@@ -59,14 +62,16 @@ public class CategoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody Category category){
+    public ResponseEntity<?> updateCategory(@PathVariable Long id, @RequestBody Category category) {
         category.setId(id);
         return successResponse(categoryService.save(category));
     }
+
     /**
      * Find all Product category
-     * @Param pageNo, pageSize, sortBy, sortDir
+     *
      * @return successResponse
+     * @Param pageNo, pageSize, sortBy, sortDir
      */
     @GetMapping("")
     @Operation(summary = "Find all category")
@@ -79,10 +84,10 @@ public class CategoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findALlCategory()
-    {
+    public ResponseEntity<?> findALlCategory() {
         return successResponse(categoryService.findByAll());
     }
+
     @GetMapping("{id}")
     @Operation(summary = "Find category by id")
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_OK_STR, description = "Update category by id completed",
@@ -94,8 +99,7 @@ public class CategoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> findByCategoryId(@PathVariable Long id)
-    {
+    public ResponseEntity<?> findByCategoryId(@PathVariable Long id) {
         return successResponse(categoryService.findById(id));
     }
 }

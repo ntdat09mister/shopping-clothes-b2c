@@ -16,20 +16,20 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class User {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String username;
-	private String password;
-	private String name;
-	private String gender;
-	private String address;
-	private String phone;
-	private String role;
-	private String avatar;
-	private Integer active;
-	private Date createdAt;
-	private Date modifiedAt;
-	private String passwordResetToken;
-	private Date passwordResetTokenExpiryDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String username;
+    private String password;
+    private String name;
+    private String gender;
+    private String address;
+    private String phone;
+    private String role;
+    private String avatar;
+    private Integer active;
+    private Date createdAt;
+    private Date modifiedAt;
+    private String passwordResetToken;
+    private Date passwordResetTokenExpiryDate;
 }

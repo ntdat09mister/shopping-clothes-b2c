@@ -8,7 +8,7 @@ import savvycom.productservice.domain.message.ResponseMessage;
 public class BaseController {
 
     public <T> ResponseEntity<?> successResponse(String message, String description, T data) {
-        ResponseMessage<T> responseMessage =  new ResponseMessage<>(
+        ResponseMessage<T> responseMessage = new ResponseMessage<>(
                 HttpStatus.OK.value() + "",
                 true,
                 message,

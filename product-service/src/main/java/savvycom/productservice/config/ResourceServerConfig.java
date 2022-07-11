@@ -11,13 +11,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET,"/product/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/category/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/line/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/branch/**").permitAll()
-                .antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .anyRequest().authenticated();
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.GET, "/product/**").permitAll().antMatchers(HttpMethod.GET, "/category/**").permitAll().antMatchers(HttpMethod.GET, "/line/**").permitAll().antMatchers(HttpMethod.GET, "/branch/**").permitAll().antMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll().anyRequest().authenticated();
     }
 }

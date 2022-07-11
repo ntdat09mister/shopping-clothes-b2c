@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 
 @RestController
@@ -34,12 +35,7 @@ public class CartController extends BaseController {
     @ApiResponse(responseCode = HttpStatusCode.OK, description = "Find successfully", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
     @ApiResponse(responseCode = HttpStatusCode.BAD_REQUEST, description = "Invalid input", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
     @ApiResponse(responseCode = HttpStatusCode.UNPROCESSABLE_ENTITY, description = "Internal Server Error", content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BaseMessage.class))})
-    public ResponseEntity<?> findAll(@UserInfo User user,
-                                     @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_NUMBER) Integer pageNo,
-                                     @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_SIZE) Integer pageSize,
-                                     @RequestParam(required = false, defaultValue = DefaultPagination.SORT_BY) String sortBy,
-                                     @RequestParam(required = false, defaultValue = DefaultPagination.SORT_DIRECTION) String sortDir
-    ) {
+    public ResponseEntity<?> findAll(@UserInfo User user, @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_NUMBER) Integer pageNo, @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_SIZE) Integer pageSize, @RequestParam(required = false, defaultValue = DefaultPagination.SORT_BY) String sortBy, @RequestParam(required = false, defaultValue = DefaultPagination.SORT_DIRECTION) String sortDir) {
         return successResponse(cartService.findAll(user.getId(), pageNo, pageSize, sortBy, sortDir));
     }
 

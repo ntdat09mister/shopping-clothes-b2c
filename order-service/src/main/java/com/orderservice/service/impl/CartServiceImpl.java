@@ -21,13 +21,14 @@ import java.util.stream.Collectors;
 public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductClient productClient;
+
     @Override
-    public CartDTO findAll(Long userId, int pageNo, int pageSize,String sortBy,String sortDir){
+    public CartDTO findAll(Long userId, int pageNo, int pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Cart> carts = cartRepository.findByUserIdAndActive(userId, true, pageable);
-        Long totalOrders= Long.valueOf(carts.getContent().size());
+        Long totalOrders = Long.valueOf(carts.getContent().size());
 
         return CartDTO.builder()
                 .cartData(carts)
@@ -58,14 +59,14 @@ public class CartServiceImpl implements CartService {
     @Override
     public void insert(CartInsertDTO cartInsertDTO) {
         Cart cart = new Cart();
-        List<Long> inventoryQuantities =  productClient.findByProductId(cartInsertDTO.getProductId()).getData().getInventories().stream().map(inventory -> {
+        List<Long> inventoryQuantities = productClient.findByProductId(cartInsertDTO.getProductId()).getData().getInventories().stream().map(inventory -> {
             Long quantity = inventory.getQuantity();
             return quantity;
         }).collect(Collectors.toList());
         Long cartQuantity = cartInsertDTO.getQuantity();
-        boolean check=false;
-        for(int i=0;i<inventoryQuantities.size();i++){
-            if(inventoryQuantities.get(i)>cartQuantity){
+        boolean check = false;
+        for (int i = 0; i < inventoryQuantities.size(); i++) {
+            if (inventoryQuantities.get(i) > cartQuantity) {
                 cart.setUserId(cartInsertDTO.getUserId());
                 cart.setProductId(cartInsertDTO.getProductId());
                 cart.setQuantity(cartInsertDTO.getQuantity());
@@ -75,7 +76,7 @@ public class CartServiceImpl implements CartService {
                 break;
             }
         }
-        if(check==false){
+        if (check == false) {
             throw new QuantityOrderException("The number of orders exceeds the quantity in stock!");
         }
     }//Tạo cart mới

@@ -8,11 +8,7 @@ import org.springframework.http.ResponseEntity;
 public class BaseController {
 
     public <T> ResponseEntity<?> successResponse(String message, T data) {
-        Message<T> responseMessage = new Message<>(
-                HttpStatus.OK.value() + "",
-                true,
-                message,
-                data);
+        Message<T> responseMessage = new Message<>(HttpStatus.OK.value() + "", true, message, data);
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 

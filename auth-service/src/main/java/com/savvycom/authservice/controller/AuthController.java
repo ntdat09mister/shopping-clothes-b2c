@@ -16,19 +16,19 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-	/**
-	 * Verify token from other service
-	 *
-	 * @param authentication OAuth2Authentication
-	 * @return user information
-	 */
-	@GetMapping("/user")
-	public ResponseEntity<?> getUser(OAuth2Authentication authentication) {
-		Map<String, Object> userInfo = new HashMap<>();
-		userInfo.put("user", authentication.getPrincipal());
-		userInfo.put("authorities", AuthorityUtils
-				.authorityListToSet(authentication.getUserAuthentication().getAuthorities()));
-		userInfo.put("scope", authentication.getOAuth2Request().getScope());
-		return new ResponseEntity<>(userInfo, HttpStatus.OK);
-	}
+    /**
+     * Verify token from other service
+     *
+     * @param authentication OAuth2Authentication
+     * @return user information
+     */
+    @GetMapping("/user")
+    public ResponseEntity<?> getUser(OAuth2Authentication authentication) {
+        Map<String, Object> userInfo = new HashMap<>();
+        userInfo.put("user", authentication.getPrincipal());
+        userInfo.put("authorities", AuthorityUtils
+                .authorityListToSet(authentication.getUserAuthentication().getAuthorities()));
+        userInfo.put("scope", authentication.getOAuth2Request().getScope());
+        return new ResponseEntity<>(userInfo, HttpStatus.OK);
+    }
 }

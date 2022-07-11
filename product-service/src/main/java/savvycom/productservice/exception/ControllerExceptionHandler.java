@@ -10,7 +10,7 @@ import savvycom.productservice.controller.BaseController;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends BaseController {
-    @ExceptionHandler({ MethodArgumentNotValidException.class })
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<?> handleException(MethodArgumentNotValidException e) {
         return failedResponse(
@@ -19,7 +19,7 @@ public class ControllerExceptionHandler extends BaseController {
                 null);
     }
 
-    @ExceptionHandler({ IllegalArgumentException.class })
+    @ExceptionHandler({IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<?> handleException(IllegalArgumentException e) {
         return failedResponse(
@@ -28,7 +28,7 @@ public class ControllerExceptionHandler extends BaseController {
                 null);
     }
 
-    @ExceptionHandler({ Exception.class })
+    @ExceptionHandler({Exception.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<?> handleException(Exception e) {
         return failedResponse(

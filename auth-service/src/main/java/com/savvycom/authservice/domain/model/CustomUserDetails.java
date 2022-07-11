@@ -59,11 +59,6 @@ public class CustomUserDetails implements UserDetails {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(user.getRole()));
 
-        return new CustomUserDetails(
-                user.getId(),
-                user.getUsername(),
-                user.getPassword(),
-                authorities
-        );
+        return new CustomUserDetails(user.getId(), user.getUsername(), user.getPassword(), authorities);
     }
 }

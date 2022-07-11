@@ -18,6 +18,7 @@ import savvycom.productservice.domain.entity.product.ProductLine;
 import savvycom.productservice.domain.message.ResponseMessage;
 import savvycom.productservice.service.product.IProductLineService;
 import savvycom.productservice.service.product.IProductService;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/line")
@@ -26,6 +27,7 @@ public class ProductLineController extends BaseController {
 
     /**
      * Update productLine
+     *
      * @return successResponse
      */
     @PutMapping("/{id}")
@@ -40,12 +42,14 @@ public class ProductLineController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> updateProductLine(@PathVariable("id") Long id, @RequestBody ProductLine productLine){
+    public ResponseEntity<?> updateProductLine(@PathVariable("id") Long id, @RequestBody ProductLine productLine) {
         productLine.setId(id);
         return successResponse(productLineService.save(productLine));
     }
+
     /**
      * Find product detail
+     *
      * @return successResponse
      */
     @GetMapping("/{id}")
@@ -62,8 +66,10 @@ public class ProductLineController extends BaseController {
     public ResponseEntity<?> findDetailById(@PathVariable Long id) {
         return successResponse(productLineService.findById(id));
     }
+
     /**
      * Create productDTO
+     *
      * @return successResponse
      */
     @PostMapping("")
@@ -78,9 +84,10 @@ public class ProductLineController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public void createProductDTO(@RequestBody CreateProductDTO createProductDTO){
+    public void createProductDTO(@RequestBody CreateProductDTO createProductDTO) {
         productLineService.createProductDTO(createProductDTO);
     }
+
     @PutMapping("{updateProductDTO}")
     @PreAuthorize("hasAuthority('admin')")
     @Operation(summary = "Create new ProductDTO")
@@ -93,7 +100,7 @@ public class ProductLineController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public void updateProductDTO(@RequestBody UpdateProductDTO updateProductDTO){
+    public void updateProductDTO(@RequestBody UpdateProductDTO updateProductDTO) {
         updateProductDTO.setProductLineId(updateProductDTO.getProductLineId());
         updateProductDTO.setName(updateProductDTO.getName());
         updateProductDTO.setDesc(updateProductDTO.getDesc());

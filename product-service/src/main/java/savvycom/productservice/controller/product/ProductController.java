@@ -1,4 +1,5 @@
 package savvycom.productservice.controller.product;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -32,6 +33,7 @@ public class ProductController extends BaseController {
 
     /**
      * Create new Product
+     *
      * @return successResponse
      */
     @PostMapping("")
@@ -53,8 +55,9 @@ public class ProductController extends BaseController {
 
     /**
      * Delete Product by admin
-     * @Param Long id
+     *
      * @return successResponse
+     * @Param Long id
      */
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('admin')")
@@ -72,10 +75,12 @@ public class ProductController extends BaseController {
         productService.deleteById(id);
         return successResponse("Deleted successfully!");
     }
+
     /**
      * Insert Product by admin
-     * @Param Long id
+     *
      * @return successResponse
+     * @Param Long id
      */
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('admin')")
@@ -97,8 +102,9 @@ public class ProductController extends BaseController {
 
     /**
      * Find all productOutput by id
-     * @Param Long id
+     *
      * @return successResponse with List<ProductOutput>
+     * @Param Long id
      */
     @GetMapping("/{id}")
     @Operation(summary = "Find ProductResponse By id")
@@ -114,10 +120,12 @@ public class ProductController extends BaseController {
     public ResponseEntity<?> findProductResponseById(@PathVariable("id") Long id) {
         return successResponse(productService.findProductOutputById(id));
     }
+
     /**
      * Filter,search product, search categoryName by categoryId, find product detail
-     * @Param productDetailId, categoryId, name, color, size, priceFrom, priceTo
+     *
      * @return successResponse with ProductResponse
+     * @Param productDetailId, categoryId, name, color, size, priceFrom, priceTo
      */
     @GetMapping("")
     @Operation(summary = "Filter,search product name, search categoryName, find productDetail")
@@ -131,68 +139,59 @@ public class ProductController extends BaseController {
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
     public ResponseEntity<?> findAllProductAndProductDetailByIdAndFilterAndSearchProduct(
-    @RequestParam(value = "productDetailId", required = false) Long productDetailId,
-    @RequestParam(value = "categoryId", required = false) Long categoryId,
-    @RequestParam(value = "name", required = false) String name,
-    @RequestParam(value = "size", required = false) String size,
-    @RequestParam(value = "color", required = false) String color,
-    @RequestParam(value = "priceFrom", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceFrom,
-    @RequestParam(value = "priceTo", defaultValue = AppConstants.DEFAULT_PRICE_TO, required = false) Long priceTo,
-    @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
-    @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
-    @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
-    @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir)
-    {
+            @RequestParam(value = "productDetailId", required = false) Long productDetailId,
+            @RequestParam(value = "categoryId", required = false) Long categoryId,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "size", required = false) String size,
+            @RequestParam(value = "color", required = false) String color,
+            @RequestParam(value = "priceFrom", defaultValue = AppConstants.DEFAULT_PRICE_FROM, required = false) Long priceFrom,
+            @RequestParam(value = "priceTo", defaultValue = AppConstants.DEFAULT_PRICE_TO, required = false) Long priceTo,
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir) {
         // find all productOutput
-        if (productDetailId == null && categoryId == null && name == null && size == null && color == null)
-        {
+        if (productDetailId == null && categoryId == null && name == null && size == null && color == null) {
             PageImpl<?> productOutput = productService.findAllProductOutput(pageNo, pageSize, sortBy, sortDir);
             return successResponse(productOutput);
         }
         // find product detail
-         else if(productDetailId != null && categoryId == null && name == null && size == null && color == null){
+        else if (productDetailId != null && categoryId == null && name == null && size == null && color == null) {
             return successResponse(productLineService.findProductLineDTOById(productDetailId));
-         }
-         // search categoryName by categoryId in productLine
-         else if(productDetailId == null && categoryId != null && name == null && size == null && color == null)
-         {
+        }
+        // search categoryName by categoryId in productLine
+        else if (productDetailId == null && categoryId != null && name == null && size == null && color == null) {
             List<ProductLine> productLines1 = productLineService.findByCategoryId(categoryId);
             List<Long> productLineIds = productLines1.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
             PageImpl<?> productResponse1 = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse1);
-         }
-         // search name product
-         else if(productDetailId == null && categoryId == null && name != null && size == null && color == null)
-         {
+        }
+        // search name product
+        else if (productDetailId == null && categoryId == null && name != null && size == null && color == null) {
             name = "%" + name + "%";
             List<ProductLine> productLines = productLineService.findByNameLike(name);
             List<Long> productLineIds = productLines.stream().map(productLine -> productLine.getId()).collect(Collectors.toList());
             PageImpl<?> productResponse2 = productService.findByProductLineId(productLineIds, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse2);
-         }
-         //filter color, size, price
-         else if(productDetailId == null && categoryId == null && name == null && size != null && color != null)
-         {
+        }
+        //filter color, size, price
+        else if (productDetailId == null && categoryId == null && name == null && size != null && color != null) {
             PageImpl<?> productResponse3 = productService.findByColorAndSizeAndPriceBetween(color, size,
-                        priceFrom, priceTo, pageNo, pageSize, sortBy, sortDir);
+                    priceFrom, priceTo, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse3);
-         }
+        }
         //filter size, price
-        else if(productDetailId == null && categoryId == null && name == null && size != null && color == null)
-        {
+        else if (productDetailId == null && categoryId == null && name == null && size != null && color == null) {
             PageImpl<?> productResponse4 = productService.findBySizeAndPriceBetween(size,
                     priceFrom, priceTo, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse4);
         }
         //filter color, price
-        else if(productDetailId == null && categoryId == null && name == null && size == null && color != null)
-        {
+        else if (productDetailId == null && categoryId == null && name == null && size == null && color != null) {
             PageImpl<?> productResponse5 = productService.findByColorAndPriceBetween
                     (color, priceFrom, priceTo, pageNo, pageSize, sortBy, sortDir);
             return successResponse(productResponse5);
-        }
-        else
-        {
+        } else {
             return successResponse("Bad Request");
         }
     }

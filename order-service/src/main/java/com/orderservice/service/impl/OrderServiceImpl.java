@@ -66,12 +66,13 @@ public class OrderServiceImpl implements OrderService {
     public Page<OrderDTO> findAllOrder(Long userId, Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Specification<Order> specification = (root, cq, cb) -> QueryUtils.filter(root, cb, userId, Param.USER_ID);
-        Page<Order> orders = orderRepository.findAll(specification,pageable);
+        Page<Order> orders = orderRepository.findAll(specification, pageable);
         List<OrderDTO> orderDTOS = orders.getContent().stream().map(order -> findById(order.getId())).collect(Collectors.toList());
-        return new PageImpl<>(orderDTOS,pageable,orders.getTotalElements());
+        return new PageImpl<>(orderDTOS, pageable, orders.getTotalElements());
     }//Tìm tất cả Order
+
     @Override
     public void deleteById(Long id) {
         orderRepository.deleteById(id);
@@ -140,14 +141,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDetailDTO> findAllOrderDetailDTO(Long userId,Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
+    public Page<OrderDetailDTO> findAllOrderDetailDTO(Long userId, Integer pageNo, Integer pageSize, String sortBy, String sortDir) {
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Specification<Order> specification = (root, cq, cb) -> QueryUtils.filter(root, cb, userId, Param.USER_ID);
-        Page<Order> orders = orderRepository.findAll(specification,pageable);
+        Page<Order> orders = orderRepository.findAll(specification, pageable);
         List<OrderDetailDTO> orderDetailDTOS = orders.getContent().stream().map(order -> findOrderDetailDTOByOrderId(order.getId())).collect(Collectors.toList());
-        return new PageImpl<>(orderDetailDTOS,pageable,orders.getTotalElements());
+        return new PageImpl<>(orderDetailDTOS, pageable, orders.getTotalElements());
     }
 
     @Override

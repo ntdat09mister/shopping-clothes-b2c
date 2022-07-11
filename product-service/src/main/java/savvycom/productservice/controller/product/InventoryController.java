@@ -25,12 +25,15 @@ import java.util.List;
 public class InventoryController extends BaseController {
     @Autowired
     private IInventoryService inventoryService;
+
     @Autowired
     public InventoryController(IInventoryService InventoryService) {
         this.inventoryService = InventoryService;
     }
+
     /**
      * Create new product inventory
+     *
      * @return successResponse
      */
     @PostMapping("")
@@ -45,11 +48,13 @@ public class InventoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> newInventory(@RequestBody Inventory inventory){
+    public ResponseEntity<?> newInventory(@RequestBody Inventory inventory) {
         return successResponse(inventoryService.save(inventory));
     }
+
     /**
      * Update quantity while user order
+     *
      * @return successResponse
      */
     @PostMapping("/quantity")
@@ -67,8 +72,10 @@ public class InventoryController extends BaseController {
         inventoryService.updateQuantities(inventoryDTOs);
         return successResponse();
     }
+
     /**
      * Update product inventory
+     *
      * @return successResponse
      */
     @PutMapping("{id}")
@@ -83,8 +90,7 @@ public class InventoryController extends BaseController {
     @ApiResponse(responseCode = Const.API_RESPONSE.API_STATUS_INTERNAL_SERVER_ERROR_STR, description = "Internal Server Error",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ResponseMessage.class))})
-    public ResponseEntity<?> updateInventory(@PathVariable("id") Long id, @RequestBody Inventory inventory)
-    {
+    public ResponseEntity<?> updateInventory(@PathVariable("id") Long id, @RequestBody Inventory inventory) {
         inventory.setId(id);
         return successResponse(inventoryService.save(inventory));
     }
