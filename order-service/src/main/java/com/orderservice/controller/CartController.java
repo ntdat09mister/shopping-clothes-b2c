@@ -108,4 +108,17 @@ public class CartController extends BaseController {
         cartService.deleteByUserId(user.getId());
         return successResponse("Deleted successfully!");
     }
+    @GetMapping("view/{id}")
+    public ResponseEntity<?> findCartViewById(@PathVariable Long id){
+        return successResponse(cartService.findCartViewById(id));
+    }
+    @GetMapping("all")
+    public ResponseEntity<?> findAllCart(@UserInfo User user,
+                                         @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_NUMBER) Integer pageNo,
+                                         @RequestParam(required = false, defaultValue = DefaultPagination.PAGE_SIZE) Integer pageSize,
+                                         @RequestParam(required = false, defaultValue = DefaultPagination.SORT_BY) String sortBy,
+                                         @RequestParam(required = false, defaultValue = DefaultPagination.SORT_DIRECTION) String sortDir
+    ){
+        return successResponse(cartService.findAllCart(user.getId(),pageNo, pageSize, sortBy, sortDir));
+    }
 }
